@@ -23,13 +23,12 @@ function UserDashboard() {
 
   const { toast } = useToast();
 
-
-  //Optimised ui: Make changes in the ui enven if changes are still not made in the database
-  const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((message) => message._id !== messageId));
-  };
-
   const { data: session } = useSession();
+
+    //Optimised ui: Make changes in the ui enven if changes are still not made in the database
+    const handleDeleteMessage = (messageId: string) => {
+      setMessages(messages.filter((message) => message._id !== messageId));
+    };
 
   const form = useForm({
     resolver: zodResolver(AcceptMessageSchema),
@@ -181,12 +180,12 @@ function UserDashboard() {
       </Button>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
-          messages.map((message, index) => (
+          messages.map((message) => (
             <MessageCard
-              key={message._id}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
+            key={message._id as string | null | undefined}
+            message={message}
+            onMessageDelete={handleDeleteMessage}
+          />
           ))
         ) : (
           <p>No messages to display.</p>

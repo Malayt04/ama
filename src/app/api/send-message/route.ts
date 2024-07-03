@@ -23,7 +23,11 @@ export async function POST(request: Request) {
             }), { status: 401 });
         }
 
-        const newMessage: Message = { content, createdAt: new Date() }; // Ensure newMessage is of type Message
+        const newMessage = {
+            content,
+            createdAt: new Date(),
+        };
+        
         user.messages.push(newMessage);
         await user.save();
 
