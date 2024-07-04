@@ -1,10 +1,23 @@
-FROM node:lts-alpine
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+# inherit from a existing image to add the functionality
+FROM node:20-alpine3.18
+
+# RUN addgroup app && adduser -S -G app app
+# USER app
+
+# Set the working directory and assign ownership to the non-root user
+WORKDIR /src
+
+# Copy the package.json and package-lock.json files into the image.
+COPY package*.json ./
+
+# Install the dependencies.
+RUN npm install
+
+# Copy the rest of the source files into the image.
 COPY . .
+
+# Expose the port that the application listens on.
 EXPOSE 3000
-RUN chown -R node /usr/src/app
-USER node
-CMD ["npm", "start"]
+
+# Run the application.
+CMD npm run dev
